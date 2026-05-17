@@ -16,7 +16,6 @@ return new class extends Migration
             'hardware_nb_pcs',
             'hardware_printer_copiers',
             'hardware_other_devices',
-            'ip_address_lists',
         ];
 
         foreach ($tables as $tableName) {
@@ -54,7 +53,6 @@ return new class extends Migration
             'hardware_nb_pcs',
             'hardware_printer_copiers',
             'hardware_other_devices',
-            'ip_address_lists',
         ];
 
         foreach ($tables as $tableName) {

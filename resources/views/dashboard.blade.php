@@ -2,105 +2,153 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <x-slot name="header">
-        <h2 class="font-medium text-lg text-slate-800 dark:text-white">
-            {{ __('Home / Dashboard') }}
-        </h2>
+        <div class="flex items-center justify-between">
+            <h2 class="font-bold text-xl text-white leading-tight">
+                {{ __('Home / Dashboard') }}
+            </h2>
+        </div>
     </x-slot>
 
-    <div class="py-10 bg-slate-50 dark:bg-[#0f172a] min-h-screen">
+    <div class="py-6 bg-[#0f172a]" min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <h3 class="text-lg font-black text-slate-400 uppercase tracking-[0.3em] mb-8 mt-2 text-center">
+                HARDWARE SUMMARY
+            </h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 
-                <div class="bg-[#1e293b] p-6 rounded-2xl shadow-xl shadow-blue-500/10 text-white transform hover:-translate-y-1 transition-all duration-300 border border-slate-700">
-                    <div class="flex justify-between items-center mb-6">
-                        <div class="p-3 bg-blue-600 rounded-xl shadow-lg">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                <!-- Total Asset -->
+                <div class="bg-emerald-100 p-6 rounded-3xl border border-emerald-200 shadow-sm">
+                    <h3 class="text-xs uppercase tracking-widest font-black text-emerald-700 mb-6">
+                        Total Asset
+                    </h3>
+
+                    <div class="space-y-3 text-slate-700 text-sm">
+
+                        <div class="flex justify-between items-center rounded-2xl bg-white/70 p-4 border border-emerald-200">
+                            <span>Notebook</span>
+                            <span class="font-bold text-slate-900">{{ $notebookCount }} Unit</span>
                         </div>
-                        <span class="text-[11px] font-black uppercase tracking-[0.2em] bg-white text-slate-900 px-3 py-1 rounded-md shadow-sm">Total Assets</span>
+
+                        <div class="flex justify-between items-center rounded-2xl bg-white/70 p-4 border border-emerald-200">
+                            <span>Computer</span>
+                            <span class="font-bold text-slate-900">{{ $computerCount }} Unit</span>
+                        </div>
+
+                        <div class="flex justify-between items-center rounded-2xl bg-white/70 p-4 border border-emerald-200">
+                            <span>Printer</span>
+                            <span class="font-bold text-slate-900">{{ $printerCount }} Unit</span>
+                        </div>
+
+                        <div class="flex justify-between items-center rounded-2xl bg-white/70 p-4 border border-emerald-200">
+                            <span>Copier</span>
+                            <span class="font-bold text-slate-900">{{ $copierCount }} Unit</span>
+                        </div>
+
                     </div>
-                    <h2 class="text-5xl font-black tracking-tighter text-white">{{ $totalAsset }} <span class="text-sm font-bold text-slate-400 tracking-normal ml-1 uppercase">Units</span></h2>
                 </div>
 
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 hover:border-blue-500 transition-all">
-                    <div class="flex justify-between items-start mb-4">
-                        <p class="text-xs font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest">Notebook & PC</p>
-                        <span class="bg-blue-600 text-white text-[11px] font-bold px-3 py-1 rounded-lg shadow-md">
-                            {{ $totalAsset > 0 ? number_format(($countNbPc/$totalAsset)*100, 1) : 0 }}%
-                        </span>
-                    </div>
-                    <h2 class="text-4xl font-black text-slate-800 dark:text-white">{{ $countNbPc }}</h2>
-                    <div class="mt-4 w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
-                        <div class="bg-blue-600 h-2 rounded-full" style="width: {{ $totalAsset > 0 ? ($countNbPc/$totalAsset)*100 : 0 }}%"></div>
+                <!-- Stock Ready -->
+                <div class="bg-blue-100 p-6 rounded-3xl border border-blue-200 shadow-sm">
+                    <h3 class="text-xs uppercase tracking-widest font-black text-blue-700 mb-6">
+                        Stock Ready
+                    </h3>
+
+                    <div class="space-y-3 text-slate-700 text-sm">
+
+                        <div class="flex justify-between items-center rounded-2xl bg-white/70 p-4 border border-blue-200">
+                            <span>Notebook</span>
+                            <span class="font-bold text-slate-900">{{ $stockReadyNotebook }} Unit</span>
+                        </div>
+
+                        <div class="flex justify-between items-center rounded-2xl bg-white/70 p-4 border border-blue-200">
+                            <span>Computer</span>
+                            <span class="font-bold text-slate-900">{{ $stockReadyComputer }} Unit</span>
+                        </div>
+
+                        <div class="flex justify-between items-center rounded-2xl bg-white/70 p-4 border border-blue-200">
+                            <span>Printer</span>
+                            <span class="font-bold text-slate-900">{{ $stockReadyPrinter }} Unit</span>
+                        </div>
+
+                        <div class="flex justify-between items-center rounded-2xl bg-white/70 p-4 border border-blue-200">
+                            <span>Copier</span>
+                            <span class="font-bold text-slate-900">{{ $stockReadyCopier }} Unit</span>
+                        </div>
+
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 hover:border-emerald-500 transition-all">
-                    <div class="flex justify-between items-start mb-4">
-                        <p class="text-xs font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest">Printer & Copier</p>
-                        <div class="p-2 bg-emerald-100 dark:bg-emerald-900/50 rounded-lg">
-                            <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                <!-- Broken Asset -->
+                <div class="bg-rose-100 p-6 rounded-3xl border border-rose-200 shadow-sm">
+                    <h3 class="text-xs uppercase tracking-widest font-black text-rose-700 mb-6">
+                        Broken Asset
+                    </h3>
+
+                    <div class="space-y-3 text-slate-700 text-sm">
+
+                        <div class="flex justify-between items-center rounded-2xl bg-white/70 p-4 border border-rose-200">
+                            <span>Notebook</span>
+                            <span class="font-bold text-slate-900">{{ $brokenNotebook }} Unit</span>
                         </div>
+
+                        <div class="flex justify-between items-center rounded-2xl bg-white/70 p-4 border border-rose-200">
+                            <span>Computer</span>
+                            <span class="font-bold text-slate-900">{{ $brokenComputer }} Unit</span>
+                        </div>
+
+                        <div class="flex justify-between items-center rounded-2xl bg-white/70 p-4 border border-rose-200">
+                            <span>Printer</span>
+                            <span class="font-bold text-slate-900">{{ $brokenPrinter }} Unit</span>
+                        </div>
+
+                        <div class="flex justify-between items-center rounded-2xl bg-white/70 p-4 border border-rose-200">
+                            <span>Copier</span>
+                            <span class="font-bold text-slate-900">{{ $brokenCopier }} Unit</span>
+                        </div>
+
                     </div>
-                    <h2 class="text-4xl font-black text-slate-800 dark:text-white">{{ $countPrinter }}</h2>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2 font-black uppercase tracking-tight">Registered Devices</p>
                 </div>
 
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 hover:border-amber-500 transition-all">
-                    <div class="flex justify-between items-start mb-4">
-                        <p class="text-xs font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest">Active IPs</p>
-                        <div class="p-2 bg-amber-100 dark:bg-amber-900/50 rounded-lg">
-                            <svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
-                        </div>
-                    </div>
-                    <h2 class="text-4xl font-black text-slate-800 dark:text-white">{{ $countIp }}</h2>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2 font-black uppercase tracking-tight">Allocated Addresses</p>
-                </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
-                    <div class="flex justify-between items-center mb-8 border-b border-slate-100 dark:border-slate-700 pb-4">
-                        <h3 class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-[0.2em]">Hardware Distribution</h3>
-                    </div>
-                    <div style="position: relative; height:350px;">
-                        <canvas id="hardwareChart"></canvas>
+            <div class="grid gap-6 lg:grid-cols-2">
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest mb-1">Graphic Chart</h3>
+                    <p class="text-xs text-slate-500 mb-6">Condition Status</p>
+                    <div class="h-[300px]">
+                        <canvas id="statusChart"></canvas>
                     </div>
                 </div>
-
-                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col items-center">
-                    <h3 class="text-sm font-black text-slate-800 dark:text-white mb-8 uppercase tracking-[0.2em] self-start border-b border-slate-100 dark:border-slate-700 w-full pb-4">Composition</h3>
-                    <div style="position: relative; height:280px; width: 100%;">
-                        <canvas id="compositionChart"></canvas>
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest mb-1">Graphic Chart</h3>
+                    <p class="text-xs text-slate-500 mb-6">Asset Category</p>
+                    <div class="h-[300px]">
+                        <canvas id="categoryChart"></canvas>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script>
-        const ctxBar = document.getElementById('hardwareChart').getContext('2d');
-        const ctxDoughnut = document.getElementById('compositionChart').getContext('2d');
-        
-        const dataCounts = [{{ $countNbPc }}, {{ $countPrinter }}, {{ $countOthers }}];
+        const ctxCategory = document.getElementById('categoryChart').getContext('2d');
+        const ctxStatus = document.getElementById('statusChart').getContext('2d');
 
-        // Konfigurasi Chart.js menyesuaikan tema
-        const isDark = document.documentElement.classList.contains('dark');
-        Chart.defaults.color = isDark ? '#f8fafc' : '#1e293b';
-        Chart.defaults.font.weight = 'bold';
-        Chart.defaults.font.family = "'Plus Jakarta Sans', 'Inter', sans-serif";
+        const categoryData = [{{ $notebookCount }}, {{ $computerCount }}, {{ $printerCount }}, {{ $copierCount }}];
+        const statusData = [{{ $conditionNormal }}, {{ $conditionMinor }}, {{ $conditionBroken }}];
 
-        new Chart(ctxBar, {
+        Chart.defaults.color = '#334155';
+        Chart.defaults.font.family = "'Inter', sans-serif";
+
+        new Chart(ctxCategory, {
             type: 'bar',
             data: {
-                labels: ['Notebook & PC', 'Printer', 'Others'],
+                labels: ['Notebook', 'Computer', 'Printer', 'Copier'],
                 datasets: [{
-                    label: 'Units',
-                    data: dataCounts,
-                    backgroundColor: ['#2563eb', '#10b981', '#f59e0b'],
-                    borderRadius: 12,
-                    barThickness: 45
+                    data: categoryData,
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'],
+                    borderRadius: 10,
                 }]
             },
             options: {
@@ -108,25 +156,21 @@
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        grid: { color: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)' },
-                        ticks: { font: { size: 11 } }
-                    },
+                    y: { beginAtZero: true, ticks: { precision: 0 } },
                     x: { grid: { display: false } }
                 }
             }
         });
 
-        new Chart(ctxDoughnut, {
+        new Chart(ctxStatus, {
             type: 'doughnut',
             data: {
-                labels: ['Notebook', 'Printer', 'Others'],
+                labels: ['Normal', 'Minor Issue', 'Broken'],
                 datasets: [{
-                    data: dataCounts,
-                    backgroundColor: ['#2563eb', '#10b981', '#f59e0b'],
-                    borderWidth: 0,
-                    spacing: 10
+                    data: statusData,
+                    backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                    borderWidth: 5,
+                    borderColor: '#ffffff'
                 }]
             },
             options: {
@@ -134,14 +178,7 @@
                 maintainAspectRatio: false,
                 cutout: '70%',
                 plugins: {
-                    legend: { 
-                        position: 'bottom', 
-                        labels: { 
-                            padding: 25, 
-                            usePointStyle: true, 
-                            font: { size: 12, weight: '900' } 
-                        } 
-                    }
+                    legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true } }
                 }
             }
         });

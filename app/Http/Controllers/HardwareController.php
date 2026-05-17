@@ -18,16 +18,95 @@ use App\Models\MasterStatus;
 class HardwareController extends Controller
 {
     public function indexDashboard() {
-    // Menghitung jumlah data di tiap tabel
-    $countNbPc = HardwareNbPc::count();
-    $countPrinter = HardwarePrinterCopier::count();
-    $countOthers = HardwareOtherDevice::count();
-    $countIp = IpAddressList::count();
-    
-    // Total semua asset hardware
-    $totalAsset = $countNbPc + $countPrinter + $countOthers;
+        // Menghitung jumlah data di tiap tabel
+        $countNbPc = HardwareNbPc::count();
+        $countPrinter = HardwarePrinterCopier::count();
+        $countOthers = HardwareOtherDevice::count();
+        $countIp = IpAddressList::count();
 
-    return view('dashboard', compact('countNbPc', 'countPrinter', 'countOthers', 'countIp', 'totalAsset'));
+        // Total semua asset hardware
+        $totalAsset = $countNbPc + $countPrinter + $countOthers;
+
+        $normalStatusIds = MasterStatus::where('status_name', 'like', 'Normal%')->pluck('id')->toArray();
+        // Cari status Maintenance
+        $minorStatusIds = MasterStatus::where('status_name', 'like', '%Maintenance%')->pluck('id')->toArray();
+        // Cari status Broken
+        $brokenStatusIds = MasterStatus::where('status_name', 'like', '%Broken%')->pluck('id')->toArray();
+
+        $notebookCount = HardwareNbPc::where('item_name', 'like', '%Notebook%')->count();
+        $computerCount = HardwareNbPc::where(function ($query) {
+            $query->where('item_name', 'like', '%Computer%')
+                  ->orWhere('item_name', 'like', '%PC%');
+        })->count();
+        $printerCount = HardwarePrinterCopier::where(function ($query) {
+            $query->where('item_name', 'like', '%Printer%')
+                  ->orWhere('item_name', 'like', '%printer%');
+        })->count();
+        $copierCount = HardwarePrinterCopier::where(function ($query) {
+            $query->where('item_name', 'like', '%Copier%')
+                  ->orWhere('item_name', 'like', '%copier%');
+        })->count();
+
+        $stockReadyNotebook = HardwareNbPc::whereIn('status_id', $normalStatusIds)->where('item_name', 'like', '%Notebook%')->count();
+        $stockReadyComputer = HardwareNbPc::whereIn('status_id', $normalStatusIds)->where(function ($query) {
+            $query->where('item_name', 'like', '%Computer%')
+                  ->orWhere('item_name', 'like', '%PC%');
+        })->count();
+        $stockReadyPrinter = HardwarePrinterCopier::whereIn('status_id', $normalStatusIds)->where(function ($query) {
+            $query->where('item_name', 'like', '%Printer%')
+                  ->orWhere('item_name', 'like', '%printer%');
+        })->count();
+        $stockReadyCopier = HardwarePrinterCopier::whereIn('status_id', $normalStatusIds)->where(function ($query) {
+            $query->where('item_name', 'like', '%Copier%')
+                  ->orWhere('item_name', 'like', '%copier%');
+        })->count();
+
+        $brokenNotebook = HardwareNbPc::whereIn('status_id', $brokenStatusIds)->where('item_name', 'like', '%Notebook%')->count();
+        $brokenComputer = HardwareNbPc::whereIn('status_id', $brokenStatusIds)->where(function ($query) {
+            $query->where('item_name', 'like', '%Computer%')
+                  ->orWhere('item_name', 'like', '%PC%');
+        })->count();
+        $brokenPrinter = HardwarePrinterCopier::whereIn('status_id', $brokenStatusIds)->where(function ($query) {
+            $query->where('item_name', 'like', '%Printer%')
+                  ->orWhere('item_name', 'like', '%printer%');
+        })->count();
+        $brokenCopier = HardwarePrinterCopier::whereIn('status_id', $brokenStatusIds)->where(function ($query) {
+            $query->where('item_name', 'like', '%Copier%')
+                  ->orWhere('item_name', 'like', '%copier%');
+        })->count();
+
+        $conditionNormal = HardwareNbPc::whereIn('status_id', $normalStatusIds)->count()
+            + HardwarePrinterCopier::whereIn('status_id', $normalStatusIds)->count()
+            + HardwareOtherDevice::whereIn('status_id', $normalStatusIds)->count();
+        $conditionMinor = HardwareNbPc::whereIn('status_id', $minorStatusIds)->count()
+            + HardwarePrinterCopier::whereIn('status_id', $minorStatusIds)->count()
+            + HardwareOtherDevice::whereIn('status_id', $minorStatusIds)->count();
+        $conditionBroken = HardwareNbPc::whereIn('status_id', $brokenStatusIds)->count()
+            + HardwarePrinterCopier::whereIn('status_id', $brokenStatusIds)->count()
+            + HardwareOtherDevice::whereIn('status_id', $brokenStatusIds)->count();
+
+        return view('dashboard', compact(
+            'countNbPc',
+            'countPrinter',
+            'countOthers',
+            'countIp',
+            'totalAsset',
+            'notebookCount',
+            'computerCount',
+            'printerCount',
+            'copierCount',
+            'stockReadyNotebook',
+            'stockReadyComputer',
+            'stockReadyPrinter',
+            'stockReadyCopier',
+            'brokenNotebook',
+            'brokenComputer',
+            'brokenPrinter',
+            'brokenCopier',
+            'conditionNormal',
+            'conditionMinor',
+            'conditionBroken'
+        ));
     }
     
     // Fungsi untuk menampilkan halaman Notebook & PC

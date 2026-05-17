@@ -5,11 +5,20 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12" x-data="{ showForm: false }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-bold dark:text-white mb-4 uppercase text-blue-600">Add New IP Allocation</h3>
+            <div x-show="showForm" 
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 transform -translate-y-4"
+                 x-transition:enter-end="opacity-100 transform translate-y-0"
+                 class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 mb-6 border border-gray-200 dark:border-gray-700"
+                 style="display: none;">
+                
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold dark:text-white uppercase tracking-wider text-blue-600">Add New IP Allocation</h3>
+                    <button @click="showForm = false" class="text-gray-400 hover:text-red-500 text-2xl transition">&times;</button>
+                </div>
                 
                 @if(session('success'))
                     <div class="bg-green-500 text-white p-3 rounded-lg mb-4 shadow-sm">{{ session('success') }}</div>
@@ -40,27 +49,44 @@
                             <option value="{{ $location->location_name }}">{{ $location->location_name }}</option>
                         @endforeach
                     </select>
-                    <input type="text" name="remark" placeholder="Remark" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm">
                     
-                    <button type="submit" class="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 col-span-1 md:col-span-3 font-bold transition shadow-md">
-                        SAVE IP DATA
+                    <input type="text" name="remark" placeholder="Remark / Catatan" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm">
+                    
+                    <button type="submit" class="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 md:col-span-3 font-bold transition shadow-md uppercase text-sm">
+                        Save IP Data
                     </button>
                 </form>
             </div>
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-bold dark:text-white uppercase tracking-wider">IP Address Directory</h3>
-                    <button onclick="exportTableToExcel('ip-table', 'IP-Address-List')" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg text-sm shadow-md flex items-center gap-2 transition font-semibold">
-                        📥 Export Excel
-                    </button>
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-bold dark:text-white uppercase tracking-wider">IP Address List</h3>
+                    
+                    <div class="flex items-center gap-3">
+                        <button @click="showForm = !showForm" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm shadow-md flex items-center gap-2 transition font-semibold">
+                            <svg x-show="!showForm" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
+                            </svg>
+                            <svg x-show="showForm" style="display: none;" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span x-text="showForm ? 'Close Form' : 'Add IP'"></span>
+                        </button>
+
+                        <button onclick="exportTableToExcel('ip-table', 'IP-Address-List')" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg text-sm shadow-md flex items-center gap-2 transition font-semibold">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Export Excel
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="overflow-x-auto">
                     <table id="ip-table" class="w-full text-sm text-left border-collapse border border-gray-200 dark:border-gray-700">
                         <thead class="bg-[#1a5276] text-white uppercase text-xs">
                             <tr>
-                                <th class="p-3 border border-gray-300">No.</th>
+                                <th class="p-3 border border-gray-300 text-center">No.</th>
                                 <th class="p-3 border border-gray-300">IP Address</th>
                                 <th class="p-3 border border-gray-300">Username</th>
                                 <th class="p-3 border border-gray-300">Department</th>
@@ -77,25 +103,25 @@
                                 <td class="p-3 border border-gray-200 dark:border-gray-700 font-mono font-bold text-blue-600 dark:text-blue-400">{{ $ip->ip_address }}</td>
                                 <td class="p-3 border border-gray-200 dark:border-gray-700 font-semibold">{{ $ip->username }}</td>
                                 <td class="p-3 border border-gray-200 dark:border-gray-700">
-                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-bold uppercase">
+                                    <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 rounded text-[10px] font-bold uppercase tracking-wider">
                                         {{ $ip->department }}
                                     </span>
                                 </td>
                                 <td class="p-3 border border-gray-200 dark:border-gray-700">{{ $ip->device }}</td>
-                                <td class="p-3 border border-gray-200 dark:border-gray-700">{{ $ip->location }}</td>
-                                <td class="p-3 border border-gray-200 dark:border-gray-700 text-xs italic">{{ $ip->remark }}</td>
-                                <td class="p-3 border border-gray-200 dark:border-gray-700">
-                                    <div class="flex justify-center items-center gap-3">
+                                <td class="p-3 border border-gray-200 dark:border-gray-700 text-xs">{{ $ip->location }}</td>
+                                <td class="p-3 border border-gray-200 dark:border-gray-700 text-xs italic text-gray-500 dark:text-gray-400">{{ $ip->remark }}</td>
+                                <td class="p-3 border border-gray-200 dark:border-gray-700 text-center">
+                                    <div class="flex justify-center items-center gap-3 text-xs">
                                         <a href="{{ route('ip-list.edit', $ip->id) }}" class="text-blue-600 hover:text-blue-800 font-bold transition">EDIT</a>
                                         <form action="{{ route('ip-list.destroy', $ip->id) }}" method="POST" onsubmit="return confirm('Hapus data IP ini?')">
                                             @csrf @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-800 font-bold uppercase transition text-xs">Hapus</button>
+                                            <button type="submit" class="text-red-600 hover:text-red-800 font-bold uppercase">Hapus</button>
                                         </form>
                                     </div>
                                 </td>
                             </tr>
                             @empty
-                            <tr><td colspan="8" class="p-4 text-center text-gray-500 italic border">Belum ada data IP.</td></tr>
+                            <tr><td colspan="8" class="p-6 text-center text-gray-500 italic border">Belum ada data IP.</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -111,8 +137,8 @@
         var cloneTable = table.cloneNode(true);
         var rows = cloneTable.rows;
         for (var i = 0; i < rows.length; i++) { rows[i].deleteCell(-1); }
-        var wb = XLSX.utils.table_to_book(cloneTable, { sheet: "IP List SYMITRA" });
-        XLSX.writeFile(wb, (filename ? filename : 'Export-Data') + '.xlsx');
+        var wb = XLSX.utils.table_to_book(cloneTable, { sheet: "IP List" });
+        XLSX.writeFile(wb, (filename ? filename : 'IP-Address-Data') + '.xlsx');
     }
     </script>
 </x-app-layout>

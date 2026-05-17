@@ -32,7 +32,7 @@
                 class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-800 transition-all">
                 <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
-                    <span class="font-bold text-xs uppercase tracking-widest">Hardware</span>
+                    <span class="font-bold text-xs uppercase tracking-widest">Hardware Inventory</span>
                 </div>
                 <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
@@ -45,7 +45,7 @@
 
         <a href="{{ route('ip-list') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('ip-list') ? 'bg-blue-600 text-white' : 'text-slate-400 hover:bg-slate-800' }}">
             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-            <span class="font-bold text-xs uppercase tracking-widest">IP Address</span>
+            <span class="font-bold text-xs uppercase tracking-widest">IP Address List</span>
         </a>
 
         <a href="{{ route('remote-access') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('remote-access') ? 'bg-blue-600 text-white' : 'text-slate-400 hover:bg-slate-800' }}">

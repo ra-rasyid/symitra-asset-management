@@ -4,13 +4,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'SYMITRA') }}</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <style>
             /* Mencegah sidebar kedip saat reload */
             [x-cloak] { display: none !important; }
         </style>
-    </head>
+        <link rel="icon" type="image/jpeg" href="{{ asset('images/logo-symitra.jpeg') }}">
+  
     
     <body class="font-sans antialiased h-full overflow-hidden bg-[#0f172a]">
     {{-- WRAPPER UTAMA: Menggunakan flex untuk membagi kolom --}}
