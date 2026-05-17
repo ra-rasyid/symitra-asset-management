@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Hardware Inventory - Notebook & PC') }}
+        <h2 class="font-medium text-lg text-slate-800 dark:text-white">
+            {{ __('Home / Hardware Inventory / Notebook & PC') }}
         </h2>
     </x-slot>
 
@@ -35,8 +35,18 @@
                     <input type="text" name="serial_number" placeholder="Serial Number" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm" required>
                     <input type="text" name="mac_address" placeholder="Mac Address / Host Name" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm">
                     <input type="text" name="username" placeholder="Username" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm">
-                    <input type="text" name="project" placeholder="Project" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm">
-                    <input type="text" name="location" placeholder="Location" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm">
+                    <select name="project" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm">
+                        <option value="">-- Select Project --</option>
+                        @foreach($projects as $project)
+                            <option value="{{ $project->project_name }}">{{ $project->project_name }}</option>
+                        @endforeach
+                    </select>
+                    <select name="location" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm">
+                        <option value="">-- Select Location --</option>
+                        @foreach($locations as $location)
+                            <option value="{{ $location->location_name }}">{{ $location->location_name }}</option>
+                        @endforeach
+                    </select>
                     <textarea name="remark" placeholder="Remark" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm md:col-span-1"></textarea>
                     
                     <button type="submit" class="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 md:col-span-3 font-bold transition shadow-md">

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DeviceSeeder extends Seeder
+class MasterDeviceSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -19,7 +19,6 @@ class DeviceSeeder extends Seeder
             ['device_name' => 'Printer'],
             ['device_name' => 'Copier'],
             ['device_name' => 'Router'],
-            ['device_name' => 'Server'],
         ]);
     }
 }

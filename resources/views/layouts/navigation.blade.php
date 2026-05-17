@@ -1,96 +1,64 @@
-<nav x-data="{ open: false }" class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-700 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="font-black text-2xl tracking-tighter text-blue-600 dark:text-blue-400 flex items-center gap-2">
-                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                            <div class="w-3 h-3 bg-white rounded-full"></div>
-                        </div>
-                        SYMITRA
-                    </a>
-                </div>
-
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-
-                    <div class="hidden sm:flex sm:items-center sm:ms-6">
-                        <x-dropdown align="right" width="48">
-                            <x-slot name="trigger">
-                                <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                                    <div>Hardware Inventory</div>
-                                    <div class="ms-1">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                            </x-slot>
-
-                            <x-slot name="content">
-                                <x-dropdown-link :href="route('hardware.nb-pc')">
-                                    {{ __('Notebook & PC') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link :href="route('hardware.printer')">
-                                    {{ __('Printer & Copier') }}
-                                </x-dropdown-link>
-                                <x-dropdown-link :href="route('hardware.others')">
-                                    {{ __('Other Devices') }}
-                                </x-dropdown-link>
-                            </x-slot>
-                        </x-dropdown>
-                    </div>
-
-                    <x-nav-link :href="route('ip-list')" :active="request()->routeIs('ip-list')">
-                        {{ __('IP Address List') }}
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('remote-access')" :active="request()->routeIs('remote-access')">
-                        {{ __('Remote Access') }}
-                    </x-nav-link>
-                </div>
+﻿<aside class="w-72 bg-[#1e293b] text-white flex flex-col shrink-0 border-r border-slate-700 shadow-2xl lg:z-50">
+    <div class="flex items-center justify-center h-24 border-b border-slate-700 px-6 shrink-0">
+        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 group">
+            {{-- Area Logo Image --}}
+            <div class="w-10 h-10 flex items-center justify-center overflow-hidden">
+                <img src="{{ asset('images/logo-symitra.jpeg') }}" 
+                    alt="SYMITRA Logo" 
+                    class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110">
             </div>
-
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
-
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
+            
+            {{-- Area Teks (Brand + Sub-text) --}}
+            <div class="flex flex-col">
+                <span class="font-black text-2xl tracking-tighter uppercase text-white leading-none">
+                    SYMITRA
+                </span>
+                <span class="text-[10px] font-medium text-slate-400 uppercase tracking-[0.2em] mt-1 leading-none">
+                    System Management IT Resource & Asset
+                </span>
             </div>
+        </a>
+    </div>
 
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+    <nav class="flex-1 overflow-y-auto py-6 px-4 flex flex-col gap-y-2 custom-scrollbar">
+        <a href="{{ route('dashboard') }}" 
+           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all group {{ request()->routeIs('dashboard') ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-800' }}">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            <span class="font-bold text-xs uppercase tracking-widest">Dashboard</span>
+        </a>
+
+        <div x-data="{ open: {{ request()->routeIs('hardware.*') ? 'true' : 'false' }} }">
+            <button @click="open = !open" 
+                class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-slate-800 transition-all">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
+                    <span class="font-bold text-xs uppercase tracking-widest">Hardware</span>
+                </div>
+                <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div x-show="open" x-cloak class="mt-1 ml-4 flex flex-col gap-y-1">
+                <a href="{{ route('hardware.nb-pc') }}" class="block px-4 py-2 text-[10px] font-black uppercase rounded-lg {{ request()->routeIs('hardware.nb-pc') ? 'text-blue-400 bg-blue-400/10' : 'text-slate-500 hover:text-white' }}">Notebook & PC</a>
+                <a href="{{ route('hardware.printer') }}" class="block px-4 py-2 text-[10px] font-black uppercase rounded-lg {{ request()->routeIs('hardware.printer') ? 'text-blue-400 bg-blue-400/10' : 'text-slate-500 hover:text-white' }}">Printer & Copier</a>
+                <a href="{{ route('hardware.others') }}" class="block px-4 py-2 text-[10px] font-black uppercase rounded-lg {{ request()->routeIs('hardware.others') ? 'text-blue-400 bg-blue-400/10' : 'text-slate-500 hover:text-white' }}">Other Devices</a>
+            </div>
+        </div>
+
+        <a href="{{ route('ip-list') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('ip-list') ? 'bg-blue-600 text-white' : 'text-slate-400 hover:bg-slate-800' }}">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            <span class="font-bold text-xs uppercase tracking-widest">IP Address</span>
+        </a>
+
+        <a href="{{ route('remote-access') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('remote-access') ? 'bg-blue-600 text-white' : 'text-slate-400 hover:bg-slate-800' }}">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+            <span class="font-bold text-xs uppercase tracking-widest">Remote Access</span>
+        </a>
+    </nav>
+
+    <div class="p-4 border-t border-slate-700 bg-slate-900/30 shrink-0">
+        <div class="flex items-center gap-3 px-2 mb-4">
+            <div class="min-w-0">
+                <p class="text-[10px] text-slate-500 truncate">SYMITRA Version 1.0</p>
             </div>
         </div>
     </div>
-</nav>
+</aside>

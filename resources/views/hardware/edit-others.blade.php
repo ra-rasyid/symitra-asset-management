@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Edit Asset - ') . $asset->serial_number }}
+        <h2 class="font-medium text-lg text-slate-800 dark:text-white">
+            {{ __('Home / Hardware Inventory / Other Devices / Edit Asset') }}
         </h2>
     </x-slot>
 

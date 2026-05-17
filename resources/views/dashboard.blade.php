@@ -2,8 +2,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <x-slot name="header">
-        <h2 class="font-black text-2xl text-slate-800 dark:text-white leading-tight tracking-tight">
-            {{ __('SYMITRA Control Center') }}
+        <h2 class="font-medium text-lg text-slate-800 dark:text-white">
+            {{ __('Home / Dashboard') }}
         </h2>
     </x-slot>
 

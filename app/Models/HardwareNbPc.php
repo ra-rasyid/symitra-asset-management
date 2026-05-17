@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class HardwareNbPc extends Model
 {
@@ -19,4 +20,17 @@ class HardwareNbPc extends Model
         'location', 
         'remark'
     ];
+
+    /**
+     * Get the project that owns this asset.
+     */
+    public function projectData(): BelongsTo
+    {
+        return $this->belongsTo(MasterProject::class, 'project', 'project_name');
+    }
+
+    public function locationData(): BelongsTo
+    {
+        return $this->belongsTo(MasterLocation::class, 'location', 'location_name');
+    }
 }
