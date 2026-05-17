@@ -10,7 +10,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     
-    // 1. Dashboard Utama (Halaman 1 PDF)
+    // 1. Dashboard Utama
     Route::get('/dashboard', [HardwareController::class, 'indexDashboard'])->name('dashboard');
 
     // 2. Hardware Inventory Group
@@ -35,12 +35,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/others/edit/{id}', [HardwareController::class, 'editOthers'])->name('others.edit');
         Route::put('/others/update/{id}', [HardwareController::class, 'updateOthers'])->name('others.update');
         Route::delete('/others/delete/{id}', [HardwareController::class, 'destroyOthers'])->name('others.destroy');
-
     });
 
     // 3. IP Address List 
-    Route::get('/ip-list', [HardwareController::class, 'indexIp'])->name('ip-list');
-    Route::post('/ip-list', [HardwareController::class, 'storeIp'])->name('ip-list.store');
     Route::get('/ip-list', [HardwareController::class, 'indexIp'])->name('ip-list');
     Route::post('/ip-list', [HardwareController::class, 'storeIp'])->name('ip-list.store');
     Route::get('/ip-list/{id}/edit', [HardwareController::class, 'editIp'])->name('ip-list.edit');
@@ -49,17 +46,43 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // 4. Remote Access 
     Route::get('/remote-access', [HardwareController::class, 'indexRemote'])->name('remote-access');
-    Route::get('/remote-access', [HardwareController::class, 'indexRemote'])->name('remote-access');
     Route::post('/remote-access', [HardwareController::class, 'storeRemote'])->name('remote-access.store');
     Route::get('/remote-access/{id}/edit', [HardwareController::class, 'editRemote'])->name('remote-access.edit');
     Route::put('/remote-access/{id}', [HardwareController::class, 'updateRemote'])->name('remote-access.update');
     Route::delete('/remote-access/{id}', [HardwareController::class, 'destroyRemote'])->name('remote-access.destroy');
 
-    // 5. Profile Routes
+    // 5. Master Data Group (UPGRADED)
+    Route::prefix('master')->name('master.')->group(function () {
+        // Location
+        Route::get('/location', [HardwareController::class, 'masterLocation'])->name('location');
+        Route::post('/location', [HardwareController::class, 'storeMasterLocation'])->name('location.store');
+        Route::delete('/location/{id}', [HardwareController::class, 'destroyMasterLocation'])->name('location.destroy');
+
+        // Department
+        Route::get('/department', [HardwareController::class, 'masterDepartment'])->name('department');
+        Route::post('/department', [HardwareController::class, 'storeMasterDepartment'])->name('department.store');
+        Route::delete('/department/{id}', [HardwareController::class, 'destroyMasterDepartment'])->name('department.destroy');
+
+        // Project
+        Route::get('/project', [HardwareController::class, 'masterProject'])->name('project');
+        Route::post('/project', [HardwareController::class, 'storeMasterProject'])->name('project.store');
+        Route::delete('/project/{id}', [HardwareController::class, 'destroyMasterProject'])->name('project.destroy');
+
+        // Devices
+        Route::get('/devices', [HardwareController::class, 'masterDevices'])->name('devices');
+        Route::post('/devices', [HardwareController::class, 'storeMasterDevices'])->name('devices.store');
+        Route::delete('/devices/{id}', [HardwareController::class, 'destroyMasterDevices'])->name('devices.destroy');
+
+        // Status
+        Route::get('/status', [HardwareController::class, 'masterStatus'])->name('status');
+        Route::post('/status', [HardwareController::class, 'storeMasterStatus'])->name('status.store');
+        Route::delete('/status/{id}', [HardwareController::class, 'destroyMasterStatus'])->name('status.destroy');
+    });
+
+    // 6. Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    });
-
+});
 
 require __DIR__.'/auth.php';

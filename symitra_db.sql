@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 16, 2026 at 07:54 AM
+-- Generation Time: May 17, 2026 at 05:32 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,6 +32,16 @@ CREATE TABLE `cache` (
   `value` mediumtext NOT NULL,
   `expiration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `cache`
+--
+
+INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
+('laravel-cache-ragil@gmail.com|127.0.0.1', 'i:1;', 1779017529),
+('laravel-cache-ragil@gmail.com|127.0.0.1:timer', 'i:1779017529;', 1779017529),
+('laravel-cache-rasyid@gmail.com|127.0.0.1', 'i:1;', 1779017547),
+('laravel-cache-rasyid@gmail.com|127.0.0.1:timer', 'i:1779017547;', 1779017547);
 
 -- --------------------------------------------------------
 
@@ -77,7 +87,7 @@ CREATE TABLE `hardware_nb_pcs` (
   `username` varchar(255) DEFAULT NULL,
   `project` varchar(255) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
-  `remark` text DEFAULT NULL,
+  `status_id` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -86,8 +96,11 @@ CREATE TABLE `hardware_nb_pcs` (
 -- Dumping data for table `hardware_nb_pcs`
 --
 
-INSERT INTO `hardware_nb_pcs` (`id`, `item_name`, `brand`, `model_type`, `serial_number`, `mac_address`, `username`, `project`, `location`, `remark`, `created_at`, `updated_at`) VALUES
-(1, 'testing 3', 'lenovo', 'laptop', '123', '6231', 'ragil_nur_rasyid', 'testing', 'Yogyakarta', 'percobaaan pertama', '2026-05-15 12:20:02', '2026-05-15 20:40:26');
+INSERT INTO `hardware_nb_pcs` (`id`, `item_name`, `brand`, `model_type`, `serial_number`, `mac_address`, `username`, `project`, `location`, `status_id`, `created_at`, `updated_at`) VALUES
+(1, 'notebook', 'lenovo', 'laptop', '123', '6231', 'user1', 'CSPB', 'Head Office – Balikpapan', 4, '2026-05-17 00:40:48', '2026-05-17 08:24:31'),
+(2, 'Notebook', 'Notebook', 'Notebook', '345', '354', 'Notebook', 'CWSR', 'Site Project – Handil', 2, '2026-05-17 01:39:10', '2026-05-17 01:39:10'),
+(3, 'Computer', 'lg', 'intel', '44322', '2222', 'biru', 'CWSR', 'Samboja', 1, '2026-05-17 08:23:33', '2026-05-17 08:24:13'),
+(4, 'Notebook', 'samsung', 'ryzen', '8584', '92929', 'admin', 'CWSR', 'Head Office – Balikpapan', 2, '2026-05-17 08:26:35', '2026-05-17 08:26:35');
 
 -- --------------------------------------------------------
 
@@ -105,18 +118,10 @@ CREATE TABLE `hardware_other_devices` (
   `username` varchar(255) DEFAULT NULL,
   `project` varchar(255) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
-  `remark` text DEFAULT NULL,
+  `status_id` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `hardware_other_devices`
---
-
-INSERT INTO `hardware_other_devices` (`id`, `item_name`, `brand`, `model_type`, `serial_number`, `mac_address`, `username`, `project`, `location`, `remark`, `created_at`, `updated_at`) VALUES
-(2, 'testing 2', 'apapun', 'komputer', '58694', '38383', 'admin', 'buat coba', 'jakarta', 'jakartajakartajakartajakartajakartajakartajakartajakartajakartajakartajakarta', '2026-05-15 20:51:01', '2026-05-15 20:51:01'),
-(3, 'testing 2', 'zzzzz', 'laptop', 'zzzz', 'zzz', NULL, NULL, 'Yogyakarta', NULL, '2026-05-15 20:51:25', '2026-05-15 20:51:25');
 
 -- --------------------------------------------------------
 
@@ -134,7 +139,7 @@ CREATE TABLE `hardware_printer_copiers` (
   `username` varchar(255) DEFAULT NULL,
   `project` varchar(255) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
-  `remark` text DEFAULT NULL,
+  `status_id` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -143,8 +148,10 @@ CREATE TABLE `hardware_printer_copiers` (
 -- Dumping data for table `hardware_printer_copiers`
 --
 
-INSERT INTO `hardware_printer_copiers` (`id`, `item_name`, `brand`, `model_type`, `serial_number`, `mac_address`, `username`, `project`, `location`, `remark`, `created_at`, `updated_at`) VALUES
-(1, 'testing 2', 'samsung', 'hp', '321', '6231', 'rasyid', 'testing', 'Yogyakarta', 'aaaa', '2026-05-15 12:20:58', '2026-05-15 12:20:58');
+INSERT INTO `hardware_printer_copiers` (`id`, `item_name`, `brand`, `model_type`, `serial_number`, `mac_address`, `username`, `project`, `location`, `status_id`, `created_at`, `updated_at`) VALUES
+(1, 'Copier', 'zzzzz', 'Ryzen', '566', '896', 'aaaa', 'CSPB', 'Head Office – Balikpapan', 1, '2026-05-17 01:40:12', '2026-05-17 01:40:12'),
+(2, 'Printer', 'lg', 'lg', '345', '4322', 'user1', 'CSPB', 'Head Office – Balikpapan', 4, '2026-05-17 08:18:57', '2026-05-17 08:18:57'),
+(3, 'Printer', 'ryzen', 'ryzen', '5556', '49494', 'user5', 'CSPB', 'Samboja', 3, '2026-05-17 08:19:58', '2026-05-17 08:20:38');
 
 -- --------------------------------------------------------
 
@@ -159,7 +166,7 @@ CREATE TABLE `ip_address_lists` (
   `department` varchar(255) NOT NULL,
   `device` varchar(255) NOT NULL,
   `location` varchar(255) NOT NULL,
-  `remark` text DEFAULT NULL,
+  `remark` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -169,7 +176,7 @@ CREATE TABLE `ip_address_lists` (
 --
 
 INSERT INTO `ip_address_lists` (`id`, `ip_address`, `username`, `department`, `device`, `location`, `remark`, `created_at`, `updated_at`) VALUES
-(3, '2222', 'aaaaaa', 'Finance', 'Copier', 'aaaa', 'aajaja', '2026-05-15 22:08:30', '2026-05-15 22:08:30');
+(1, '192.168.1.104', 'Test', 'HRD', 'Notebook', 'Head Office – Balikpapan', 'testing 1', '2026-05-17 00:39:30', '2026-05-17 00:40:02');
 
 -- --------------------------------------------------------
 
@@ -229,7 +236,10 @@ INSERT INTO `master_departments` (`id`, `dept_name`, `dept_code`, `remark`, `cre
 (1, 'IT', 'IT01', 'Information Technology', NULL, NULL),
 (2, 'HRD', 'HR01', 'Human Resource', NULL, NULL),
 (3, 'Finance', 'FIN', 'Finance & Accounting', NULL, NULL),
-(4, 'Project', 'PRJ', 'Site Project', NULL, NULL);
+(4, 'Project', 'PRJ', 'Site Project', NULL, NULL),
+(5, 'BOD', 'BOD', 'BOD', NULL, NULL),
+(6, 'Asset', 'AST', 'Asset Management', NULL, NULL),
+(7, 'Procurement', 'PRC', 'Procurement', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -254,8 +264,7 @@ INSERT INTO `master_hardware_devices` (`id`, `device_name`, `created_at`, `updat
 (3, 'Monitor', NULL, NULL),
 (4, 'Printer', NULL, NULL),
 (5, 'Copier', NULL, NULL),
-(6, 'Router', NULL, NULL),
-(7, 'Server', NULL, NULL);
+(6, 'Router', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -277,7 +286,7 @@ CREATE TABLE `master_locations` (
 INSERT INTO `master_locations` (`id`, `location_name`, `created_at`, `updated_at`) VALUES
 (1, 'Head Office – Balikpapan', NULL, NULL),
 (2, 'Site Project – Handil', NULL, NULL),
-(3, 'Warehouse – Samboja', NULL, NULL);
+(3, 'Samboja', '2026-05-17 08:01:22', '2026-05-17 08:01:22');
 
 -- --------------------------------------------------------
 
@@ -287,9 +296,8 @@ INSERT INTO `master_locations` (`id`, `location_name`, `created_at`, `updated_at
 
 CREATE TABLE `master_projects` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `project_name` varchar(255) NOT NULL,
-  `project_code` varchar(255) DEFAULT NULL,
-  `description` text DEFAULT NULL,
+  `project_code` varchar(255) NOT NULL,
+  `project_name` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -298,10 +306,34 @@ CREATE TABLE `master_projects` (
 -- Dumping data for table `master_projects`
 --
 
-INSERT INTO `master_projects` (`id`, `project_name`, `project_code`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'CSPB', 'CSPB', NULL, NULL, NULL),
-(2, 'CWSR', 'CWSR', NULL, NULL, NULL),
-(3, 'HO', 'HO', NULL, NULL, NULL);
+INSERT INTO `master_projects` (`id`, `project_code`, `project_name`, `created_at`, `updated_at`) VALUES
+(1, 'CSPB', 'CSPB', '2026-05-17 00:16:04', '2026-05-17 00:16:04'),
+(2, 'CWSR', 'CWSR', '2026-05-17 00:16:04', '2026-05-17 00:16:04'),
+(3, 'HO', 'HO', '2026-05-17 00:16:04', '2026-05-17 00:16:04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `master_statuses`
+--
+
+CREATE TABLE `master_statuses` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `status_name` varchar(255) NOT NULL,
+  `status_color` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `master_statuses`
+--
+
+INSERT INTO `master_statuses` (`id`, `status_name`, `status_color`, `created_at`, `updated_at`) VALUES
+(1, 'Normal (stock)', NULL, '2026-05-17 00:16:04', '2026-05-17 00:16:04'),
+(2, 'Normal (in use)', NULL, '2026-05-17 00:16:04', '2026-05-17 00:16:04'),
+(3, 'Maintenance', NULL, '2026-05-17 00:16:04', '2026-05-17 00:16:04'),
+(4, 'Broken', NULL, '2026-05-17 00:16:04', '2026-05-17 00:16:04');
 
 -- --------------------------------------------------------
 
@@ -324,16 +356,16 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '0001_01_01_000001_create_cache_table', 1),
 (3, '0001_01_01_000002_create_jobs_table', 1),
 (4, '2026_05_15_162844_create_hardware_nb_pcs_table', 1),
-(5, '2026_05_15_163227_create_ip_address_lists_table', 1),
-(6, '2026_05_15_163246_create_remote_accesses_table', 1),
-(7, '2026_05_15_184758_create_hardware_other_devices_table', 1),
-(8, '2026_05_15_184758_create_hardware_printer_copiers_table', 1),
-(9, '2026_05_15_194343_create_ip_address_lists_table', 2),
-(10, '2026_05_15_194343_create_remote_accesses_table', 2),
-(11, '2026_05_16_043647_create_master_departments_table', 3),
-(12, '2026_05_16_045628_create_master_hardware_devices_table', 4),
-(13, '2026_05_16_051703_create_master_locations_table', 5),
-(14, '2026_05_16_052000_create_master_projects_table', 6);
+(5, '2026_05_15_184758_create_hardware_other_devices_table', 1),
+(6, '2026_05_15_184758_create_hardware_printer_copiers_table', 1),
+(7, '2026_05_15_194343_create_ip_address_lists_table', 1),
+(8, '2026_05_15_194343_create_remote_accesses_table', 1),
+(9, '2026_05_16_043647_create_master_departments_table', 1),
+(10, '2026_05_16_045628_create_master_hardware_devices_table', 1),
+(11, '2026_05_16_051703_create_master_locations_table', 1),
+(12, '2026_05_17_032153_create_master_projects_table', 1),
+(13, '2026_05_17_064702_create_master_statuses_table', 1),
+(15, '2026_05_17_070000_update_remarks_to_status_id_in_related_tables', 2);
 
 -- --------------------------------------------------------
 
@@ -371,8 +403,8 @@ CREATE TABLE `remote_accesses` (
 --
 
 INSERT INTO `remote_accesses` (`id`, `device_type`, `username`, `app_name`, `device_id`, `password`, `project`, `location`, `created_at`, `updated_at`) VALUES
-(1, 'PC Desktop', 'hhh', 'TeamViewer', '0000', '8888', 'gg', 'ggg', '2026-05-15 12:59:31', '2026-05-15 12:59:31'),
-(2, 'Notebook', 'testing', 'UltraViewer', '123', 'aku ', 'CSPB', 'Site Project – Handil', '2026-05-15 22:51:01', '2026-05-15 22:51:01');
+(1, 'Notebook', 'Renata', 'UltraViewer', '12345678', 'abcdefgh', 'CSPB', 'Site Project – Handil', '2026-05-17 00:27:48', '2026-05-17 00:27:48'),
+(2, 'Notebook', 'Renata', 'UltraViewer 2', '12345678', 'abcdefgh', 'CSPB', 'Site Project – Handil', '2026-05-17 00:27:48', '2026-05-17 00:28:12');
 
 -- --------------------------------------------------------
 
@@ -394,7 +426,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('KnEN42u96ZthrP0YRygpaJ0KTQYFudbT9CN1lfE5', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiOTdCT2V4MHM2enA3akVwdEtkZUxQTmxTaGhadEJYS0ZIQnp1eVJUMiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7czo1OiJyb3V0ZSI7czo1OiJsb2dpbiI7fXM6MzoidXJsIjthOjE6e3M6ODoiaW50ZW5kZWQiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQiO319', 1778910745);
+('mDiJav3V0ihIfjfuBTWS2UHmiXJa8meTkSFy6V5f', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiekxSQzgwN0taUGx2RERXN2hqS1ZQRXlBWnRTZDIyRzNDamlJOXRRYSI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mjk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9pcC1saXN0IjtzOjU6InJvdXRlIjtzOjc6ImlwLWxpc3QiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO3M6MTc6InBhc3N3b3JkX2hhc2hfd2ViIjtzOjY0OiJhZDUwMDFlODAwNzI2OTExMzMwZTFjNTJjNzMwYzkyOGNiZGU4OWJlZmIwMmM1MzIyZmM3NDIzOTU5YWFmYWRhIjt9', 1779024668),
+('O9M0Sd9YHigzD9qP9UWALHt0C9egvFloDaK7CDlD', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoidXB3M0FtVmhNOWFUYlMxQ3lDNE1vak9ZZFo4ZnBRT0Ztb28zSklIRCI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvZGFzaGJvYXJkIjtzOjU6InJvdXRlIjtzOjk6ImRhc2hib2FyZCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czoxNzoicGFzc3dvcmRfaGFzaF93ZWIiO3M6NjQ6ImFkNTAwMWU4MDA3MjY5MTEzMzBlMWM1MmM3MzBjOTI4Y2JkZTg5YmVmYjAyYzUzMjJmYzc0MjM5NTlhYWZhZGEiO30=', 1779031716);
 
 -- --------------------------------------------------------
 
@@ -418,8 +451,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'biru', 'akirasy261@gmail.com', NULL, '$2y$12$r6xOrZLkOJYht4KTyf9LhudkqAnBHFkzVHF54WBRnENKIK9UBPiIy', 'sIkz99tb6CcpoUEucmz0Zhsjunn5n0xrrOTPzvo26R5ddNqKvnEVZj5HlAvI', '2026-05-15 12:19:38', '2026-05-15 12:19:38'),
-(2, 'melinda ayu', 'melinda@gmail.com', NULL, '$2y$12$dE47MbenZ3IEwvh/j5teBORV/MrmFAuP73UXcVeq/Cj5gtRWNjDyq', 'rb2H2V9rz8L4Wsw0wgZct3m5lTGhnLvYaP0UaIBcGm6SQaAHxikx1kWdhKUy', '2026-05-15 20:04:43', '2026-05-15 20:05:10');
+(1, 'Administrator SYMITRA', 'admin@symitra.com', '2026-05-17 00:16:05', '$2y$12$jd/3XMBIt0v1z0WOqrxdAejEjZ3wZQZfIwFxKtDPZVOeZ5C4aHfhe', 'y3c06WcRmf', '2026-05-17 00:16:05', '2026-05-17 00:16:05');
 
 --
 -- Indexes for dumped tables
@@ -451,28 +483,32 @@ ALTER TABLE `failed_jobs`
 --
 ALTER TABLE `hardware_nb_pcs`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `hardware_nb_pcs_serial_number_unique` (`serial_number`);
+  ADD UNIQUE KEY `hardware_nb_pcs_serial_number_unique` (`serial_number`),
+  ADD KEY `hardware_nb_pcs_status_id_foreign` (`status_id`);
 
 --
 -- Indexes for table `hardware_other_devices`
 --
 ALTER TABLE `hardware_other_devices`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `hardware_other_devices_serial_number_unique` (`serial_number`);
+  ADD UNIQUE KEY `hardware_other_devices_serial_number_unique` (`serial_number`),
+  ADD KEY `hardware_other_devices_status_id_foreign` (`status_id`);
 
 --
 -- Indexes for table `hardware_printer_copiers`
 --
 ALTER TABLE `hardware_printer_copiers`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `hardware_printer_copiers_serial_number_unique` (`serial_number`);
+  ADD UNIQUE KEY `hardware_printer_copiers_serial_number_unique` (`serial_number`),
+  ADD KEY `hardware_printer_copiers_status_id_foreign` (`status_id`);
 
 --
 -- Indexes for table `ip_address_lists`
 --
 ALTER TABLE `ip_address_lists`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `ip_address_lists_ip_address_unique` (`ip_address`);
+  ADD UNIQUE KEY `ip_address_lists_ip_address_unique` (`ip_address`),
+  ADD KEY `ip_address_lists_status_id_foreign` (`remark`);
 
 --
 -- Indexes for table `jobs`
@@ -509,7 +545,15 @@ ALTER TABLE `master_locations`
 -- Indexes for table `master_projects`
 --
 ALTER TABLE `master_projects`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `master_projects_project_code_unique` (`project_code`);
+
+--
+-- Indexes for table `master_statuses`
+--
+ALTER TABLE `master_statuses`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `master_statuses_status_name_unique` (`status_name`);
 
 --
 -- Indexes for table `migrations`
@@ -558,25 +602,25 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `hardware_nb_pcs`
 --
 ALTER TABLE `hardware_nb_pcs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `hardware_other_devices`
 --
 ALTER TABLE `hardware_other_devices`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `hardware_printer_copiers`
 --
 ALTER TABLE `hardware_printer_copiers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `ip_address_lists`
 --
 ALTER TABLE `ip_address_lists`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `jobs`
@@ -588,13 +632,13 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `master_departments`
 --
 ALTER TABLE `master_departments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `master_hardware_devices`
 --
 ALTER TABLE `master_hardware_devices`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `master_locations`
@@ -609,10 +653,16 @@ ALTER TABLE `master_projects`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `master_statuses`
+--
+ALTER TABLE `master_statuses`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `remote_accesses`
@@ -624,7 +674,29 @@ ALTER TABLE `remote_accesses`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `hardware_nb_pcs`
+--
+ALTER TABLE `hardware_nb_pcs`
+  ADD CONSTRAINT `hardware_nb_pcs_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `master_statuses` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `hardware_other_devices`
+--
+ALTER TABLE `hardware_other_devices`
+  ADD CONSTRAINT `hardware_other_devices_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `master_statuses` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `hardware_printer_copiers`
+--
+ALTER TABLE `hardware_printer_copiers`
+  ADD CONSTRAINT `hardware_printer_copiers_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `master_statuses` (`id`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

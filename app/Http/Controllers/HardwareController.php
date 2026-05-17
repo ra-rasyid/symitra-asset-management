@@ -18,113 +18,94 @@ use App\Models\MasterStatus;
 class HardwareController extends Controller
 {
     public function indexDashboard() {
-        // Menghitung jumlah data di tiap tabel
+        // 1. Ambil ID Status dari Master (Case Insensitive agar lebih aman)
+        $normalStatusIds = MasterStatus::where('status_name', 'like', 'Normal%')->pluck('id')->toArray();
+        $minorStatusIds = MasterStatus::where('status_name', 'like', '%Maintenance%')
+                                     ->orWhere('status_name', 'like', '%Issue%')
+                                     ->pluck('id')->toArray();
+        $brokenStatusIds = MasterStatus::where('status_name', 'like', '%Broken%')
+                                      ->orWhere('status_name', 'like', '%Rusak%')
+                                      ->pluck('id')->toArray();
+
+        // 2. Menghitung jumlah data di tiap tabel (Total Global)
         $countNbPc = HardwareNbPc::count();
         $countPrinter = HardwarePrinterCopier::count();
         $countOthers = HardwareOtherDevice::count();
         $countIp = IpAddressList::count();
 
-        // Total semua asset hardware
         $totalAsset = $countNbPc + $countPrinter + $countOthers;
 
-        $normalStatusIds = MasterStatus::where('status_name', 'like', 'Normal%')->pluck('id')->toArray();
-        // Cari status Maintenance
-        $minorStatusIds = MasterStatus::where('status_name', 'like', '%Maintenance%')->pluck('id')->toArray();
-        // Cari status Broken
-        $brokenStatusIds = MasterStatus::where('status_name', 'like', '%Broken%')->pluck('id')->toArray();
-
-        $notebookCount = HardwareNbPc::where('item_name', 'like', '%Notebook%')->count();
-        $computerCount = HardwareNbPc::where(function ($query) {
-            $query->where('item_name', 'like', '%Computer%')
-                  ->orWhere('item_name', 'like', '%PC%');
+        // 3. Logika Pencarian Kategori (Untuk Total Asset Card)
+        $notebookCount = HardwareNbPc::where(function($q){
+            $q->where('item_name', 'like', '%Notebook%')->orWhere('item_name', 'like', '%Laptop%');
         })->count();
-        $printerCount = HardwarePrinterCopier::where(function ($query) {
-            $query->where('item_name', 'like', '%Printer%')
-                  ->orWhere('item_name', 'like', '%printer%');
-        })->count();
-        $copierCount = HardwarePrinterCopier::where(function ($query) {
-            $query->where('item_name', 'like', '%Copier%')
-                  ->orWhere('item_name', 'like', '%copier%');
+        
+        $computerCount = HardwareNbPc::where(function($q){
+            $q->where('item_name', 'like', '%Computer%')->orWhere('item_name', 'like', '%PC%')->orWhere('item_name', 'like', '%Desktop%');
         })->count();
 
-        $stockReadyNotebook = HardwareNbPc::whereIn('status_id', $normalStatusIds)->where('item_name', 'like', '%Notebook%')->count();
-        $stockReadyComputer = HardwareNbPc::whereIn('status_id', $normalStatusIds)->where(function ($query) {
-            $query->where('item_name', 'like', '%Computer%')
-                  ->orWhere('item_name', 'like', '%PC%');
-        })->count();
-        $stockReadyPrinter = HardwarePrinterCopier::whereIn('status_id', $normalStatusIds)->where(function ($query) {
-            $query->where('item_name', 'like', '%Printer%')
-                  ->orWhere('item_name', 'like', '%printer%');
-        })->count();
-        $stockReadyCopier = HardwarePrinterCopier::whereIn('status_id', $normalStatusIds)->where(function ($query) {
-            $query->where('item_name', 'like', '%Copier%')
-                  ->orWhere('item_name', 'like', '%copier%');
+        // Untuk Printer & Copier, jika tabel tersebut isinya sudah pasti printer/copier, hitung total barisnya saja agar sinkron
+        $printerCount = HardwarePrinterCopier::where('item_name', 'not like', '%Copier%')->count();
+        $copierCount = HardwarePrinterCopier::where('item_name', 'like', '%Copier%')->count();
+
+        // 4. Logika Stock Ready (Status Normal)
+        $stockReadyNotebook = HardwareNbPc::whereIn('status_id', $normalStatusIds)->where(function($q){
+            $q->where('item_name', 'like', '%Notebook%')->orWhere('item_name', 'like', '%Laptop%');
         })->count();
 
-        $brokenNotebook = HardwareNbPc::whereIn('status_id', $brokenStatusIds)->where('item_name', 'like', '%Notebook%')->count();
-        $brokenComputer = HardwareNbPc::whereIn('status_id', $brokenStatusIds)->where(function ($query) {
-            $query->where('item_name', 'like', '%Computer%')
-                  ->orWhere('item_name', 'like', '%PC%');
-        })->count();
-        $brokenPrinter = HardwarePrinterCopier::whereIn('status_id', $brokenStatusIds)->where(function ($query) {
-            $query->where('item_name', 'like', '%Printer%')
-                  ->orWhere('item_name', 'like', '%printer%');
-        })->count();
-        $brokenCopier = HardwarePrinterCopier::whereIn('status_id', $brokenStatusIds)->where(function ($query) {
-            $query->where('item_name', 'like', '%Copier%')
-                  ->orWhere('item_name', 'like', '%copier%');
+        $stockReadyComputer = HardwareNbPc::whereIn('status_id', $normalStatusIds)->where(function($q){
+            $q->where('item_name', 'like', '%Computer%')->orWhere('item_name', 'like', '%PC%');
         })->count();
 
+        $stockReadyPrinter = HardwarePrinterCopier::whereIn('status_id', $normalStatusIds)->where('item_name', 'not like', '%Copier%')->count();
+        $stockReadyCopier = HardwarePrinterCopier::whereIn('status_id', $normalStatusIds)->where('item_name', 'like', '%Copier%')->count();
+
+        // 5. Logika Broken Asset (Seringkali 0 karena filter nama terlalu ketat, di sini saya buat lebih fleksibel)
+        $brokenNotebook = HardwareNbPc::whereIn('status_id', $brokenStatusIds)->where(function($q){
+            $q->where('item_name', 'like', '%Notebook%')->orWhere('item_name', 'like', '%Laptop%');
+        })->count();
+
+        $brokenComputer = HardwareNbPc::whereIn('status_id', $brokenStatusIds)->where(function($q){
+            $q->where('item_name', 'like', '%Computer%')->orWhere('item_name', 'like', '%PC%');
+        })->count();
+
+        $brokenPrinter = HardwarePrinterCopier::whereIn('status_id', $brokenStatusIds)->where('item_name', 'not like', '%Copier%')->count();
+        $brokenCopier = HardwarePrinterCopier::whereIn('status_id', $brokenStatusIds)->where('item_name', 'like', '%Copier%')->count();
+
+        // 6. Data Untuk Graphic Chart (Condition Status) - HARUS SINKRON DENGAN TOTAL SEMUA TABEL
         $conditionNormal = HardwareNbPc::whereIn('status_id', $normalStatusIds)->count()
             + HardwarePrinterCopier::whereIn('status_id', $normalStatusIds)->count()
             + HardwareOtherDevice::whereIn('status_id', $normalStatusIds)->count();
+
         $conditionMinor = HardwareNbPc::whereIn('status_id', $minorStatusIds)->count()
             + HardwarePrinterCopier::whereIn('status_id', $minorStatusIds)->count()
             + HardwareOtherDevice::whereIn('status_id', $minorStatusIds)->count();
+
         $conditionBroken = HardwareNbPc::whereIn('status_id', $brokenStatusIds)->count()
             + HardwarePrinterCopier::whereIn('status_id', $brokenStatusIds)->count()
             + HardwareOtherDevice::whereIn('status_id', $brokenStatusIds)->count();
 
         return view('dashboard', compact(
-            'countNbPc',
-            'countPrinter',
-            'countOthers',
-            'countIp',
-            'totalAsset',
-            'notebookCount',
-            'computerCount',
-            'printerCount',
-            'copierCount',
-            'stockReadyNotebook',
-            'stockReadyComputer',
-            'stockReadyPrinter',
-            'stockReadyCopier',
-            'brokenNotebook',
-            'brokenComputer',
-            'brokenPrinter',
-            'brokenCopier',
-            'conditionNormal',
-            'conditionMinor',
-            'conditionBroken'
+            'countNbPc', 'countPrinter', 'countOthers', 'countIp', 'totalAsset',
+            'notebookCount', 'computerCount', 'printerCount', 'copierCount',
+            'stockReadyNotebook', 'stockReadyComputer', 'stockReadyPrinter', 'stockReadyCopier',
+            'brokenNotebook', 'brokenComputer', 'brokenPrinter', 'brokenCopier',
+            'conditionNormal', 'conditionMinor', 'conditionBroken'
         ));
     }
     
-    // Fungsi untuk menampilkan halaman Notebook & PC
+    // --- KODE CRUD DAN MASTER DATA 
     public function indexNbPc() 
     {
-        // Mengambil semua data dari tabel MySQL hardwares_nb_pcs
         $assets = HardwareNbPc::all();
         $locations = MasterLocation::all();
         $projects = MasterProject::all();
         $statuses = MasterStatus::all();
-        
         return view('hardware.nb-pc', compact('assets', 'locations', 'projects', 'statuses'));
     }
 
-    // Fungsi untuk menyimpan data baru (Store)
     public function storeNbPc(Request $request) 
     {
-        // Validasi data agar tidak kosong
         $request->validate([
             'item_name' => 'required',
             'brand' => 'required',
@@ -132,10 +113,7 @@ class HardwareController extends Controller
             'serial_number' => 'required|unique:hardware_nb_pcs,serial_number',
             'status_id' => 'nullable|exists:master_statuses,id',
         ]);
-
-        // Simpan ke database
         HardwareNbPc::create($request->all());
-
         return redirect()->back()->with('success', 'Asset berhasil ditambahkan!');
     }
 
@@ -154,10 +132,8 @@ class HardwareController extends Controller
             'model_type' => 'required',
             'status_id' => 'nullable|exists:master_statuses,id',
         ]);
-
         $asset = HardwareNbPc::findOrFail($id);
         $asset->update($request->all());
-
         return redirect()->route('hardware.nb-pc')->with('success', 'Asset berhasil diperbarui!');
     }
 
@@ -167,8 +143,6 @@ class HardwareController extends Controller
         return redirect()->back()->with('success', 'Asset berhasil dihapus!');
     }
 
-
-    // PRINTER & COPIER
     public function indexPrinter() {
         $assets = HardwarePrinterCopier::all();
         $locations = MasterLocation::all();
@@ -204,7 +178,6 @@ class HardwareController extends Controller
             'model_type' => 'required',
             'status_id' => 'nullable|exists:master_statuses,id',
         ]);
-
         $asset = \App\Models\HardwarePrinterCopier::findOrFail($id);
         $asset->update($request->all());
         return redirect()->route('hardware.printer')->with('success', 'Printer berhasil diupdate!');
@@ -216,7 +189,6 @@ class HardwareController extends Controller
         return redirect()->back()->with('success', 'Printer berhasil dihapus!');
     }
 
-    // OTHER DEVICES
     public function indexOthers() {
         $assets = HardwareOtherDevice::all();
         $locations = MasterLocation::all();
@@ -252,7 +224,6 @@ class HardwareController extends Controller
             'model_type' => 'required',
             'status_id' => 'nullable|exists:master_statuses,id',
         ]);
-
         $asset = \App\Models\HardwareOtherDevice::findOrFail($id);
         $asset->update($request->all());
         return redirect()->route('hardware.others')->with('success', 'Device berhasil diupdate!');
@@ -264,7 +235,6 @@ class HardwareController extends Controller
         return redirect()->back()->with('success', 'Device berhasil dihapus!');
     }
 
-    // --- IP ADDRESS LIST ---
     public function indexIp() {
         $ips = \App\Models\IpAddressList::all();
         $departments = \App\Models\MasterDepartment::all();
@@ -295,7 +265,6 @@ class HardwareController extends Controller
             'ip_address' => 'required',
             'username' => 'required',
         ]);
-
         $ip = \App\Models\IpAddressList::findOrFail($id);
         $ip->update($request->all());
         return redirect()->route('ip-list')->with('success', 'IP Address berhasil diupdate!');
@@ -307,13 +276,12 @@ class HardwareController extends Controller
         return redirect()->back()->with('success', 'IP Address berhasil dihapus!');
     }
 
-    // --- REMOTE ACCESS ---
     public function indexRemote() {
         $remotes = \App\Models\RemoteAccess::all();
         $devices = \App\Models\MasterHardwareDevice::all();
         $locations = MasterLocation::all();
-           $projects = MasterProject::all();
-           return view('remote-access', compact('remotes', 'devices', 'locations', 'projects'));
+        $projects = MasterProject::all();
+        return view('remote-access', compact('remotes', 'devices', 'locations', 'projects'));
     }
 
     public function storeRemote(Request $request) {
@@ -325,13 +293,14 @@ class HardwareController extends Controller
         return redirect()->back()->with('success', 'Akses Remote berhasil disimpan!');
     }
 
-   public function editRemote($id) {
+    public function editRemote($id) {
         $remote = \App\Models\RemoteAccess::findOrFail($id);
         $devices = \App\Models\MasterHardwareDevice::all();
         $locations = MasterLocation::all();
-       $projects = MasterProject::all();
-       return view('edit-remote-access', compact('remote', 'devices', 'locations', 'projects'));
+        $projects = MasterProject::all();
+        return view('edit-remote-access', compact('remote', 'devices', 'locations', 'projects'));
     }
+    
     public function updateRemote(Request $request, $id) {
         $remote = \App\Models\RemoteAccess::findOrFail($id);
         $remote->update($request->all());
@@ -342,5 +311,86 @@ class HardwareController extends Controller
         $remote = \App\Models\RemoteAccess::findOrFail($id);
         $remote->delete();
         return redirect()->back()->with('success', 'Akses Remote berhasil dihapus!');
+    }
+
+    /** Master Data Functions */
+    public function masterLocation() {
+        $locations = MasterLocation::all();
+        return view('master.location', compact('locations'));
+    }
+
+    public function storeMasterLocation(Request $request) {
+        $request->validate(['location_name' => 'required|unique:master_locations,location_name']);
+        MasterLocation::create($request->all());
+        return redirect()->back()->with('success', 'Lokasi berhasil ditambahkan!');
+    }
+
+    public function destroyMasterLocation($id) {
+        MasterLocation::findOrFail($id)->delete();
+        return redirect()->back()->with('success', 'Lokasi berhasil dihapus!');
+    }
+
+    public function masterDepartment() {
+        $departments = MasterDepartment::all();
+        return view('master.department', compact('departments'));
+    }
+
+    public function storeMasterDepartment(Request $request) {
+        $request->validate(['dept_name' => 'required|unique:master_departments,dept_name']);
+        MasterDepartment::create($request->all());
+        return redirect()->back()->with('success', 'Departemen berhasil ditambahkan!');
+    }
+
+    public function destroyMasterDepartment($id) {
+        MasterDepartment::findOrFail($id)->delete();
+        return redirect()->back()->with('success', 'Departemen berhasil dihapus!');
+    }
+
+    public function masterProject() {
+        $projects = MasterProject::all();
+        return view('master.project', compact('projects'));
+    }
+
+    public function storeMasterProject(Request $request) {
+        $request->validate(['project_name' => 'required|unique:master_projects,project_name']);
+        MasterProject::create($request->all());
+        return redirect()->back()->with('success', 'Project berhasil ditambahkan!');
+    }
+
+    public function destroyMasterProject($id) {
+        MasterProject::findOrFail($id)->delete();
+        return redirect()->back()->with('success', 'Project berhasil dihapus!');
+    }
+
+    public function masterDevices() {
+        $devices = MasterHardwareDevice::all();
+        return view('master.devices', compact('devices'));
+    }
+
+    public function storeMasterDevices(Request $request) {
+        $request->validate(['device_name' => 'required|unique:master_hardware_devices,device_name']);
+        MasterHardwareDevice::create($request->all());
+        return redirect()->back()->with('success', 'Device berhasil ditambahkan!');
+    }
+
+    public function destroyMasterDevices($id) {
+        MasterHardwareDevice::findOrFail($id)->delete();
+        return redirect()->back()->with('success', 'Device berhasil dihapus!');
+    }
+
+    public function masterStatus() {
+        $statuses = MasterStatus::all();
+        return view('master.status', compact('statuses'));
+    }
+
+    public function storeMasterStatus(Request $request) {
+        $request->validate(['status_name' => 'required|unique:master_statuses,status_name']);
+        MasterStatus::create($request->all());
+        return redirect()->back()->with('success', 'Status berhasil ditambahkan!');
+    }
+
+    public function destroyMasterStatus($id) {
+        MasterStatus::findOrFail($id)->delete();
+        return redirect()->back()->with('success', 'Status berhasil dihapus!');
     }
 }
