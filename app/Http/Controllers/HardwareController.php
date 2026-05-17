@@ -12,6 +12,7 @@ use App\Models\MasterLocation;
 use App\Models\MasterDepartment;
 use App\Models\MasterHardwareDevice;
 use App\Models\MasterProject;
+use App\Models\MasterStatus;
 
 
 class HardwareController extends Controller
@@ -35,10 +36,10 @@ class HardwareController extends Controller
         // Mengambil semua data dari tabel MySQL hardwares_nb_pcs
         $assets = HardwareNbPc::all();
         $locations = MasterLocation::all();
-           $projects = MasterProject::all();
+        $projects = MasterProject::all();
+        $statuses = MasterStatus::all();
         
-        // Mengirim data ke file view resources/views/hardware/nb-pc.blade.php
-           return view('hardware.nb-pc', compact('assets', 'locations', 'projects'));
+        return view('hardware.nb-pc', compact('assets', 'locations', 'projects', 'statuses'));
     }
 
     // Fungsi untuk menyimpan data baru (Store)
@@ -50,6 +51,7 @@ class HardwareController extends Controller
             'brand' => 'required',
             'model_type' => 'required',
             'serial_number' => 'required|unique:hardware_nb_pcs,serial_number',
+            'status_id' => 'nullable|exists:master_statuses,id',
         ]);
 
         // Simpan ke database
@@ -61,8 +63,9 @@ class HardwareController extends Controller
     public function editNbPc($id) {
         $asset = HardwareNbPc::findOrFail($id);
         $locations = MasterLocation::all();
-           $projects = MasterProject::all();
-           return view('hardware.edit-nb-pc', compact('asset', 'locations', 'projects'));
+        $projects = MasterProject::all();
+        $statuses = MasterStatus::all();
+        return view('hardware.edit-nb-pc', compact('asset', 'locations', 'projects', 'statuses'));
     }
 
     public function updateNbPc(Request $request, $id) {
@@ -70,6 +73,7 @@ class HardwareController extends Controller
             'item_name' => 'required',
             'brand' => 'required',
             'model_type' => 'required',
+            'status_id' => 'nullable|exists:master_statuses,id',
         ]);
 
         $asset = HardwareNbPc::findOrFail($id);
@@ -89,8 +93,9 @@ class HardwareController extends Controller
     public function indexPrinter() {
         $assets = HardwarePrinterCopier::all();
         $locations = MasterLocation::all();
-           $projects = MasterProject::all();
-           return view('hardware.printer', compact('assets', 'locations', 'projects'));
+        $projects = MasterProject::all();
+        $statuses = MasterStatus::all();
+        return view('hardware.printer', compact('assets', 'locations', 'projects', 'statuses'));
     }
 
     public function storePrinter(Request $request) {
@@ -99,6 +104,7 @@ class HardwareController extends Controller
             'brand' => 'required',
             'model_type' => 'required',
             'serial_number' => 'required|unique:hardware_printer_copiers,serial_number',
+            'status_id' => 'nullable|exists:master_statuses,id',
         ]);
         HardwarePrinterCopier::create($request->all());
         return redirect()->back()->with('success', 'Printer/Copier berhasil disimpan!');
@@ -107,11 +113,19 @@ class HardwareController extends Controller
     public function editPrinter($id) {
         $asset = \App\Models\HardwarePrinterCopier::findOrFail($id);
         $locations = MasterLocation::all();
-           $projects = MasterProject::all();
-           return view('hardware.edit-printer', compact('asset', 'locations', 'projects'));
+        $projects = MasterProject::all();
+        $statuses = MasterStatus::all();
+        return view('hardware.edit-printer', compact('asset', 'locations', 'projects', 'statuses'));
     }
 
     public function updatePrinter(Request $request, $id) {
+        $request->validate([
+            'item_name' => 'required',
+            'brand' => 'required',
+            'model_type' => 'required',
+            'status_id' => 'nullable|exists:master_statuses,id',
+        ]);
+
         $asset = \App\Models\HardwarePrinterCopier::findOrFail($id);
         $asset->update($request->all());
         return redirect()->route('hardware.printer')->with('success', 'Printer berhasil diupdate!');
@@ -127,8 +141,9 @@ class HardwareController extends Controller
     public function indexOthers() {
         $assets = HardwareOtherDevice::all();
         $locations = MasterLocation::all();
-           $projects = MasterProject::all();
-           return view('hardware.others', compact('assets', 'locations', 'projects'));
+        $projects = MasterProject::all();
+        $statuses = MasterStatus::all();
+        return view('hardware.others', compact('assets', 'locations', 'projects', 'statuses'));
     }
 
     public function storeOthers(Request $request) {
@@ -137,6 +152,7 @@ class HardwareController extends Controller
             'brand' => 'required',
             'model_type' => 'required',
             'serial_number' => 'required|unique:hardware_other_devices,serial_number',
+            'status_id' => 'nullable|exists:master_statuses,id',
         ]);
         HardwareOtherDevice::create($request->all());
         return redirect()->back()->with('success', 'Device lainnya berhasil disimpan!');
@@ -145,11 +161,19 @@ class HardwareController extends Controller
     public function editOthers($id) {
         $asset = \App\Models\HardwareOtherDevice::findOrFail($id);
         $locations = MasterLocation::all();
-           $projects = MasterProject::all();
-           return view('hardware.edit-others', compact('asset', 'locations', 'projects'));
+        $projects = MasterProject::all();
+        $statuses = MasterStatus::all();
+        return view('hardware.edit-others', compact('asset', 'locations', 'projects', 'statuses'));
     }
 
     public function updateOthers(Request $request, $id) {
+        $request->validate([
+            'item_name' => 'required',
+            'brand' => 'required',
+            'model_type' => 'required',
+            'status_id' => 'nullable|exists:master_statuses,id',
+        ]);
+
         $asset = \App\Models\HardwareOtherDevice::findOrFail($id);
         $asset->update($request->all());
         return redirect()->route('hardware.others')->with('success', 'Device berhasil diupdate!');
@@ -188,6 +212,11 @@ class HardwareController extends Controller
     }
 
     public function updateIp(Request $request, $id) {
+        $request->validate([
+            'ip_address' => 'required',
+            'username' => 'required',
+        ]);
+
         $ip = \App\Models\IpAddressList::findOrFail($id);
         $ip->update($request->all());
         return redirect()->route('ip-list')->with('success', 'IP Address berhasil diupdate!');

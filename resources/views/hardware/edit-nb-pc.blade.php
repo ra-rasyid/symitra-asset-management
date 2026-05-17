@@ -60,9 +60,16 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-span-2">
-                        <label class="block text-sm dark:text-gray-300">Remark</label>
-                        <textarea name="remark" class="w-full rounded border-gray-300 shadow-sm">{{ $asset->remark }}</textarea>
+                    <div>
+                        <label class="block text-sm dark:text-gray-300">Status</label>
+                        <select name="status_id" class="w-full rounded border-gray-300 shadow-sm dark:bg-gray-700 dark:text-white">
+                            <option value="">-- Select Status --</option>
+                            @foreach($statuses as $status)
+                                <option value="{{ $status->id }}" {{ $asset->status_id == $status->id ? 'selected' : '' }}>
+                                    {{ $status->status_name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="col-span-3 flex gap-2">

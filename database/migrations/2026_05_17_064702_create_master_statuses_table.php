@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('master_statuses', function (Blueprint $table) {
             $table->id();
+            $table->string('status_name')->unique(); 
+            $table->string('status_color')->nullable(); 
             $table->timestamps();
         });
     }
+    
 
     /**
      * Reverse the migrations.

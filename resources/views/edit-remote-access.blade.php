@@ -32,12 +32,7 @@
 
                     <div>
                         <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1 uppercase text-xs">App Name</label>
-                        <select name="app_name" class="w-full rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm" required>
-                            <option value="UltraViewer" {{ $remote->app_name == 'UltraViewer' ? 'selected' : '' }}>UltraViewer</option>
-                            <option value="AnyDesk" {{ $remote->app_name == 'AnyDesk' ? 'selected' : '' }}>AnyDesk</option>
-                            <option value="TeamViewer" {{ $remote->app_name == 'TeamViewer' ? 'selected' : '' }}>TeamViewer</option>
-                            <option value="RDP" {{ $remote->app_name == 'RDP' ? 'selected' : '' }}>RDP</option>
-                        </select>
+                        <input type="text" name="app_name" value="{{ $remote->app_name }}" placeholder="e.g. UltraViewer, AnyDesk, TeamViewer, RDP" class="w-full rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm" required>
                     </div>
 
                     <div>

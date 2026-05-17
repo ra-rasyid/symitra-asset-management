@@ -21,7 +21,7 @@ return new class extends Migration
         $table->string('username')->nullable(); 
         $table->string('project')->nullable(); 
         $table->string('location')->nullable();
-        $table->text('remark')->nullable();
+        $table->unsignedBigInteger('status_id')->nullable();
         $table->timestamps();
     });
 }

@@ -47,7 +47,12 @@
                             <option value="{{ $location->location_name }}">{{ $location->location_name }}</option>
                         @endforeach
                     </select>
-                    <textarea name="remark" placeholder="Remark" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm md:col-span-1"></textarea>
+                    <select name="status_id" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm md:col-span-1">
+                        <option value="">-- Select Status --</option>
+                        @foreach($statuses as $status)
+                            <option value="{{ $status->id }}">{{ $status->status_name }}</option>
+                        @endforeach
+                    </select>
                     
                     <button type="submit" class="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 md:col-span-3 font-bold transition shadow-md">
                         SAVE ASSET
@@ -76,7 +81,7 @@
                                 <th class="p-3 border border-gray-300">Username</th>
                                 <th class="p-3 border border-gray-300">Project</th>
                                 <th class="p-3 border border-gray-300">Location</th>
-                                <th class="p-3 border border-gray-300">Remark</th>
+                                <th class="p-3 border border-gray-300">Status</th>
                                 <th class="p-3 border border-gray-300 text-center">Action</th>
                             </tr>
                         </thead>
@@ -92,7 +97,7 @@
                                 <td class="p-3 border border-gray-200 dark:border-gray-700">{{ $asset->username }}</td>
                                 <td class="p-3 border border-gray-200 dark:border-gray-700">{{ $asset->project }}</td>
                                 <td class="p-3 border border-gray-200 dark:border-gray-700">{{ $asset->location }}</td>
-                                <td class="p-3 border border-gray-200 dark:border-gray-700 text-xs italic">{{ $asset->remark }}</td>
+                                <td class="p-3 border border-gray-200 dark:border-gray-700">{{ $asset->status?->status_name ?? '-' }}</td>
                                 <td class="p-3 border border-gray-200 dark:border-gray-700">
                                     <div class="flex justify-center items-center gap-3">
                                         <a href="{{ route('hardware.nb-pc.edit', $asset->id) }}" class="text-blue-600 hover:text-blue-800 font-bold transition">

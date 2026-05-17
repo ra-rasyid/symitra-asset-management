@@ -18,7 +18,7 @@ class HardwareNbPc extends Model
         'username', 
         'project', 
         'location', 
-        'remark'
+        'status_id'
     ];
 
     /**
@@ -32,5 +32,10 @@ class HardwareNbPc extends Model
     public function locationData(): BelongsTo
     {
         return $this->belongsTo(MasterLocation::class, 'location', 'location_name');
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(MasterStatus::class, 'status_id');
     }
 }

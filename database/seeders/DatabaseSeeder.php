@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             MasterDepartmentSeeder::class,
             MasterLocationSeeder::class,
             MasterDeviceSeeder::class,
+            MasterStatusSeeder::class,
         ]);
 
         User::factory()->create([

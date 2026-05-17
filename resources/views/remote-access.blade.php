@@ -27,13 +27,7 @@
 
                     <input type="text" name="username" placeholder="Username / Owner" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm" required>
                     
-                    <select name="app_name" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm" required>
-                        <option value="">-- App Name --</option>
-                        <option value="UltraViewer">UltraViewer</option>
-                        <option value="AnyDesk">AnyDesk</option>
-                        <option value="TeamViewer">TeamViewer</option>
-                        <option value="RDP">RDP</option>
-                    </select>
+                    <input type="text" name="app_name" placeholder="App Name (e.g. UltraViewer, AnyDesk, TeamViewer, RDP)" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm" required>
 
                     <input type="text" name="device_id" placeholder="ID / Address" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm" required>
                     <input type="text" name="password" placeholder="Password" class="rounded-lg border-gray-300 dark:bg-gray-700 dark:text-white shadow-sm">
