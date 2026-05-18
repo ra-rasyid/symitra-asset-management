@@ -351,9 +351,19 @@ class HardwareController extends Controller
         return view('master.project', compact('projects'));
     }
 
-    public function storeMasterProject(Request $request) {
-        $request->validate(['project_name' => 'required|unique:master_projects,project_name']);
-        MasterProject::create($request->all());
+    public function storeMasterProject(Request $request) 
+    {
+        $request->validate([
+            'project_name' => 'required|unique:master_projects,project_name'
+        ]);
+
+        $randomCode = strtoupper(substr($request->project_name, 0, 3)) . '-' . rand(1000, 9999);
+
+        MasterProject::create([
+            'project_name' => $request->project_name,
+            'project_code' => $randomCode, 
+        ]);
+
         return redirect()->back()->with('success', 'Project berhasil ditambahkan!');
     }
 
